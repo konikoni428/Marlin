@@ -73,3 +73,28 @@ The current Marlin dev team consists of:
 Marlin is published under the [GPL license](/LICENSE) because we believe in open development. The GPL comes with both rights and obligations. Whether you use Marlin firmware as the driver for your open or closed-source product, you must keep Marlin open, and you must provide your compatible Marlin source code to end users upon request. The most straightforward way to comply with the Marlin license is to make a fork of Marlin on Github, perform your modifications, and direct users to your modified fork.
 
 While we can't prevent the use of this code in products (3D printers, CNC, etc.) that are closed source or crippled by a patent, we would prefer that you choose another firmware or, better yet, make your own.
+
+
+## Attention
+ESP01S/Octoprint Error  
+https://github.com/bigtreetech/BIGTREETECH-SKR-V1.3/issues/221
+
+```
+Changed ~/.platformio/packages/framework-arduino-lpc176x/cores/arduino/HardwareSerial.h
+to the following:
+} else if (UARTx == LPC_UART3) {
+// Initialize UART2 pin connect
+PinCfg.Funcnum = 3; //was 1
+PinCfg.OpenDrain = 0;
+PinCfg.Pinmode = 0;
+PinCfg.Pinnum = 28; //was 0
+PinCfg.Portnum = 4; //was 0
+PINSEL_ConfigPin(&PinCfg);
+PinCfg.Pinnum = 29; // was 1
+PINSEL_ConfigPin(&PinCfg);
+}
+Changed configuration.h
+to the following:
+#define SERIAL_PORT -1
+#define SERIAL_PORT_2 3
+```
